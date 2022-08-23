@@ -17,4 +17,21 @@ const validateBody = (data: any) => {
   return value;
 };
 
-export default validateBody;
+const validateHeader = (data: string) => {
+  const schema = Joi.object({
+    token: Joi.string().required().token(),
+  });
+
+  const { value } = schema.validate(data);
+
+  if (!value) {
+    throw new CustomError(401, 'You must pass a token');
+  }
+
+  return value;
+};
+
+export {
+  validateBody,
+  validateHeader,
+};
