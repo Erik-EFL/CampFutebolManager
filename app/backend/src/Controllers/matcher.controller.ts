@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import validateTeam from '../middlewares/validations/Matcher.validate';
+import Validate from '../middlewares/validations/Matcher.validate';
+import Token from '../middlewares/validations/Token.validate';
 import MatchService from '../services/matcher.services';
 
 export default class MatchController {
@@ -23,11 +24,11 @@ export default class MatchController {
   post = {
     create: async (req: Request, res: Response): Promise<void> => {
       const { homeTeam, awayTeam } = req.body;
+      await Validate.Tams(homeTeam, awayTeam);
 
-      validateTeam(homeTeam, awayTeam);
+      await Token.verify(req, res);
 
       const match = await MatchService.post.create(req.body);
-
       res.status(201).json(match);
     },
   };
