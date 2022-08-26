@@ -1,7 +1,7 @@
 import Team from '../database/models/team';
 import CustomError from '../middlewares/errors/Custom.error';
 
-export default class TeamService {
+export default class TeamService extends CustomError {
   static get = {
     all: async (): Promise<Team[]> => {
       const allTeams = await Team.findAll();
@@ -10,9 +10,9 @@ export default class TeamService {
     one: async (id: number): Promise<Team> => {
       const team = await Team.findOne({
         where: { id },
-      });
+      }) as Team;
 
-      if (!team) throw new CustomError(404, 'Team not Found!');
+      if (!team) this.notFound('Team not Found!');
 
       return team;
     },
