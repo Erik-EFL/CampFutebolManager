@@ -26,7 +26,7 @@ export default class Body extends CustomError {
     const { value } = schema.validate(data);
 
     if (!value) {
-      this.unauthorized('You must pass a token');
+      this.badRequest('Token not found');
     }
 
     return value;
